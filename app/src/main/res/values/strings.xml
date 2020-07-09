@@ -1,0 +1,36 @@
+<resources>
+
+
+
+
+    <string name="app_name" translatable="true">پاورلیفتر</string>
+    <string name="gym_menu" translatable="true">باشگاه</string>
+    <string name="coach_menu" translatable="true">اشتبا میزنی!؟!</string>
+    <string name="planing_menu" translatable="true">برنامه</string>
+    <string name="tools_menu" translatable="true">ابزار ها</string>
+    <string name="manager_menu" translatable="true">مدیریت باشگاه</string>
+    <string name="settings_menu" translatable="true">تنظیمات</string>
+    <string name="communicate" translatable="true">ارتباط با ما</string>
+    <string name="telegram" translatable="true">تلگرام</string>
+    <string name="instagram" translatable="true">اینستاگرام</string>
+    <string name="shahr" translatable="true">شهر</string>
+    <string name="ostan" translatable="true">استان</string>
+
+
+
+
+
+
+    <!-- _________________Buttons______________________ -->
+    <string name="ui_button_save" translatable="true">ذخیره</string>
+    <string name="ui_button_reg" translatable="true">ثبت</string>
+
+
+
+
+
+
+
+
+
+</resources>

@@ -1,0 +1,4 @@
+include ':ResideMenu'
+include ':MatchView'
+include ':app'
+rootProject.name = "GymAndFitness"
