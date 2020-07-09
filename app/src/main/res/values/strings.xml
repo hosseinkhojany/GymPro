@@ -1,8 +1,6 @@
 <resources>
 
 
-
-
     <string name="app_name" translatable="true">پاورلیفتر</string>
     <string name="gym_menu" translatable="true">باشگاه</string>
     <string name="coach_menu" translatable="true">اشتبا میزنی!؟!</string>
@@ -17,20 +15,10 @@
     <string name="ostan" translatable="true">استان</string>
 
 
-
-
-
-
     <!-- _________________Buttons______________________ -->
     <string name="ui_button_save" translatable="true">ذخیره</string>
     <string name="ui_button_reg" translatable="true">ثبت</string>
-
-
-
-
-
-
-
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>
