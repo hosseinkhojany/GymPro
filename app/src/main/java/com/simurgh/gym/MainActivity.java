@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpMenu() {
 
-        int a;
         resideMenu = new ResideMenu(this);
         resideMenu.setUse3D(false);
         resideMenu.setBackground(R.drawable.ic_logo3);
