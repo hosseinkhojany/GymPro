@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1048503045612:android:69d72237e6bebee1e004c9",
         "android_client_info": {
-          "package_name": "com.simurgh.gym"
+          "package_name": "com.shahbaz.gym"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "1048503045612-davvjmrgknuok8mqiv7ds8poqnqlg9qi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.simurgh.gym",
+            "package_name": "com.shahbaz.gym",
             "certificate_hash": "47e1fb2d788ad7a127ae6ffebbe9146bd2f6474c"
           }
         },
