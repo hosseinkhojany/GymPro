@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1048503045612",
-    "firebase_url": "https://gymmanagerandbodybuilding.firebaseio.com",
-    "project_id": "gymmanagerandbodybuilding",
-    "storage_bucket": "gymmanagerandbodybuilding.appspot.com"
+    "project_number": "165264601443",
+    "firebase_url": "https://powerlifter-shahbaz.firebaseio.com",
+    "project_id": "powerlifter-shahbaz",
+    "storage_bucket": "powerlifter-shahbaz.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1048503045612:android:69d72237e6bebee1e004c9",
+        "mobilesdk_app_id": "1:165264601443:android:7959002e6904635cf4a356",
         "android_client_info": {
           "package_name": "com.shahbaz.gym"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1048503045612-davvjmrgknuok8mqiv7ds8poqnqlg9qi.apps.googleusercontent.com",
+          "client_id": "165264601443-e54ogsstl5ke68jdsbcilvet4grh266e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.shahbaz.gym",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "1048503045612-lu8r6u32udctvmpvuphbp5067qg4le4l.apps.googleusercontent.com",
+          "client_id": "165264601443-4lakf6r217uul7lh8pj5evblsusmar3a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDX_O3mCJIWiyuheQYqdd9k3Ra1uutJqJ8"
+          "current_key": "AIzaSyDOGvu7-STG12ojhgXdVFwqxyh5TbMVqj4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1048503045612-lu8r6u32udctvmpvuphbp5067qg4le4l.apps.googleusercontent.com",
+              "client_id": "165264601443-4lakf6r217uul7lh8pj5evblsusmar3a.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
