@@ -35,10 +35,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':MatchView')
     implementation project(':ResideMenu')
-    // Add the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics:17.4.4'
-
-    // Add the SDK for Firebase Cloud Messaging
     implementation 'com.google.firebase:firebase-messaging:20.2.3'
 
 }
