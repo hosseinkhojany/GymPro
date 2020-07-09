@@ -26,6 +26,7 @@ public class Gym extends Fragment implements OnMapReadyCallback {
 
 
        mapView = (MapView)parentView.findViewById(R.id.map_gym);
+       mapView.onCreate(savedInstanceState);
        mapView.getMapAsync(this);
        
 
@@ -44,8 +45,8 @@ public class Gym extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onResume() {
-        mapView.onResume();
         super.onResume();
+        mapView.onResume();
     }
 
 
