@@ -100,8 +100,8 @@ public class InternetOKey  {
             }
         }
     }
-}
 
-interface ConnectionChangeListener   {
-    void onConnectionChanged(boolean isConnectionAvailable);
+    public interface ConnectionChangeListener   {
+        void onConnectionChanged(boolean isConnectionAvailable);
+    }
 }
