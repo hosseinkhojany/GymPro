@@ -75,6 +75,8 @@ public class ResideMenu extends FrameLayout {
     private boolean mUse3D;
     private static final int ROTATE_Y_ANGLE = 10;
 
+    public boolean menu_enable = false;
+
     public ResideMenu(Context context) {
         super(context);
         initViews(context, -1, -1);
@@ -579,8 +581,15 @@ public class ResideMenu extends FrameLayout {
 
     private float lastActionDownX, lastActionDownY;
 
+    public void setMenu_enable(boolean state){
+        menu_enable = state;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        MotionEvent motionEvent;
+        if (menu_enable){
         float currentActivityScaleX = ViewHelper.getScaleX(viewActivity);
         if (currentActivityScaleX == 1.0f)
             setScaleDirectionByRawX(ev.getRawX());
@@ -662,7 +671,11 @@ public class ResideMenu extends FrameLayout {
 
         }
         lastRawX = ev.getRawX();
-        return super.dispatchTouchEvent(ev);
+
+            return super.dispatchTouchEvent(ev);
+        }else{
+            return super.dispatchTouchEvent(ev);
+        }
     }
 
     public int getScreenHeight() {
