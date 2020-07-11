@@ -22,6 +22,7 @@ import com.special.ResideMenu.ResideMenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int a;
     private ResideMenu resideMenu;
     private ResideMenuItem gym;
     private ResideMenuItem coach;
