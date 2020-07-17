@@ -13,6 +13,13 @@
     <string name="instagram" translatable="true">اینستاگرام</string>
     <string name="shahr" translatable="true">شهر</string>
     <string name="ostan" translatable="true">استان</string>
+    <string name="network_no" translatable="true">اینترنت در دسرس نیست!</string>
+    <string name="network_ok" translatable="true">متصل شد</string>
+    <string name="request_enable_gps" translatable="true">برای استفاده از نقشه لطفا بازدن "ok" مکان را فعال کنید</string>
+    <string name="no_enable_gps" translatable="true">مکان فعال نشد</string>
+    <string name="no_access" translatable="true">دسرسی داده نشد</string>
+    <string name="make_access" translatable="true">برای استفاده از نقشه نیاز به این دسرسی است</string>
+
 
 
     <!-- _________________Buttons______________________ -->

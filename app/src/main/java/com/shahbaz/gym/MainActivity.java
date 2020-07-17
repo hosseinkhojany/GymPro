@@ -9,16 +9,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,10 +32,9 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.shahbaz.gym.appUtils.InternetOKey;
+import com.shahbaz.gym.appUtils.Data.StoreValue;
 import com.shahbaz.gym.appUtils.Views.TextViewFarsi;
+import com.shahbaz.gym.appUtils.Views.tos;
 import com.shahbaz.gym.menus.coach.Coach;
 import com.shahbaz.gym.menus.gym.Gym;
 import com.special.ResideMenu.ResideMenu;
@@ -87,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        InitGoogleApiClient();
-
-
     }
 
     private void setUpMenu() {
@@ -111,11 +104,9 @@ public class MainActivity extends AppCompatActivity {
         gym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeFragment(new Gym());
                 resideMenu.closeMenu();
-
-                lable_menu.setText(R.string.gym_menu);
-                icon_menu.setImageResource(R.drawable.gym_menu_ic);
+                InitGoogleApiClient();
+                setUpToolbarAndInit(R.string.gym_menu , R.drawable.gym_menu_ic , true);
             }
         });
         coach.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +114,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 changeFragment(new Coach());
                 resideMenu.closeMenu();
-
-                lable_menu.setText(R.string.coach_menu);
-                icon_menu.setImageResource(R.drawable.coach_menu_ic);
+                setUpToolbarAndInit(R.string.coach_menu , R.drawable.coach_menu_ic , false);
             }
         });
         planing.setOnClickListener(new View.OnClickListener() {
@@ -133,9 +122,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 changeFragment(new Gym());
                 resideMenu.closeMenu();
-
-                lable_menu.setText(R.string.planing_menu);
-                icon_menu.setImageResource(R.drawable.planing_menu_ic);
+                setUpToolbarAndInit(R.string.planing_menu , R.drawable.planing_menu_ic , false);
             }
         });
         tools.setOnClickListener(new View.OnClickListener() {
@@ -143,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 changeFragment(new Gym());
                 resideMenu.closeMenu();
-
-                lable_menu.setText(R.string.tools_menu);
-                icon_menu.setImageResource(R.drawable.tools_menu_ic);
+                setUpToolbarAndInit(R.string.tools_menu , R.drawable.tools_menu_ic , false);
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
@@ -153,9 +138,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 changeFragment(new Gym());
                 resideMenu.closeMenu();
-
-                lable_menu.setText(R.string.settings_menu);
-                icon_menu.setImageResource(R.drawable.settings_menu_ic);
+                setUpToolbarAndInit(R.string.settings_menu , R.drawable.settings_menu_ic , false);
             }
         });
         communicate.setOnClickListener(new View.OnClickListener() {
@@ -163,9 +146,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 changeFragment(new Gym());
                 resideMenu.closeMenu();
-
-                lable_menu.setText(R.string.communicate);
-                icon_menu.setImageResource(R.drawable.communicate_menu_ic);
+                setUpToolbarAndInit(R.string.communicate , R.drawable.communicate_menu_ic , false);
             }
         });
 
@@ -178,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
         resideMenu.addMenuItem(communicate , ResideMenu.DIRECTION_RIGHT);
 
     }
+    public void setUpToolbarAndInit(int string_id , int icon_id,boolean its_gym){
+        if (its_gym) {
+            lable_menu.setText(string_id);
+            icon_menu.setImageResource(icon_id);
+        }else{
+            lable_menu.setText(string_id);
+            icon_menu.setImageResource(icon_id);
+            started_map = false;
+        }
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -188,6 +179,22 @@ public class MainActivity extends AppCompatActivity {
     private void changeFragment(Fragment targetFragment){
         resideMenu.clearIgnoredViewList();
         resideMenu.setMenu_enable(true);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, targetFragment, "fragment")
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
+    private void changeFragment(Fragment targetFragment  , String[] args){
+        resideMenu.clearIgnoredViewList();
+        resideMenu.setMenu_enable(true);
+
+        Bundle bundle = new Bundle();
+        for (int i = 0; i < args.length; i++) {
+            bundle.putString(args[i].split(":")[0] , args[i].split(":")[1]);
+        }
+        targetFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment, targetFragment, "fragment")
@@ -227,14 +234,10 @@ public class MainActivity extends AppCompatActivity {
                         .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                             @Override
                             public void onConnected(@Nullable Bundle bundle) {
-
-                                Toast.makeText(thisContextActivity, "Connected", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onConnectionSuspended(int i) {
-
-                                Toast.makeText(thisContextActivity, "Sus", Toast.LENGTH_SHORT).show();
 
                             }
                         })
@@ -245,15 +248,16 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }).build();
                 googleApiClient.connect();
-                Toast.makeText(thisContextActivity, "Hello3", Toast.LENGTH_SHORT).show();
                 ShowGpsDialog();
             }else{
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION , Manifest.permission.ACCESS_COARSE_LOCATION},
-                        REQUEST_GOOGLE_MAP_FINE_LOCATION);
+                ShowGpsDialog();
             }
 
 
+        }else{
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION , Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_GOOGLE_MAP_FINE_LOCATION);
         }
     }
 
@@ -276,43 +280,45 @@ public class MainActivity extends AppCompatActivity {
             public void onResult(LocationSettingsResult result) {
                 final Status status = result.getStatus();
                 final LocationSettingsStates state = result.getLocationSettingsStates();
+                if (state.isGpsPresent() && state.isGpsUsable()){
+                    if (!started_map) {
+                        started_map = true;
+                        changeFragment(new Gym() , new String[]{"gps:on"});
+                    }
+                }
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
-
-                        // All location settings are satisfied. The client can initialize location
-                        // requests here.
-                        InternetOKey internetOKey = new InternetOKey();
-                        internetOKey.addConnectionChangeListener(new InternetOKey.ConnectionChangeListener() {
-                            @Override
-                            public void onConnectionChanged(boolean isConnectionAvailable) {
-
-                                if (isConnectionAvailable){
-                                    if (!started_map) {
-                                        changeFragment(new Gym());
-                                        started_map = true;
-                                    }
-                                }else{
-                                    Toast.makeText(thisContextActivity, "No Internet Connection!", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        });
 
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied. But could be fixed by showing the user
                         // a dialog.
 
-                                try {
-                                    // Show the dialog by calling startResolutionForResult(),
-                                    // and check the result in onActivityResult().
+                        try {
+                            //get a last location user if a location not null load it and if it null
+                            //request to enable gps
+
+                            float zoom = Float.parseFloat(StoreValue.getVal(getApplicationContext() ,
+                                    StoreValue.User.last_user_location , "0:0:0")
+                                    .split(":")[2]);
+
+                            if (zoom != 0f){
+                                if (zoom > 20f){
+                                    tos.warning(MainActivity.this , R.string.request_enable_gps);
                                     status.startResolutionForResult(
                                             MainActivity.this, REQUEST_LOCATION_CODE);
-
-                                } catch (IntentSender.SendIntentException e) {
-                                    // Ignore the error.
-                                    Toast.makeText(thisContextActivity, "ERoor", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    changeFragment(new Gym() ,new String[]{"gps:off"});
                                 }
+                            }else{
+                                tos.warning(MainActivity.this , R.string.request_enable_gps);
+                                status.startResolutionForResult(
+                                        MainActivity.this, REQUEST_LOCATION_CODE);
+                            }
+
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
 
 
 
@@ -331,27 +337,33 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOCATION_CODE){
             if (resultCode == Activity.RESULT_OK){
-                Toast.makeText(thisContextActivity, "Success", Toast.LENGTH_SHORT).show();
-                InternetOKey internetOKey = new InternetOKey();
-                internetOKey.addConnectionChangeListener(new InternetOKey.ConnectionChangeListener() {
-                    @Override
-                    public void onConnectionChanged(boolean isConnectionAvailable) {
-
-                        if (isConnectionAvailable){
-                            if (!started_map) {
-                                changeFragment(new Gym());
-                            started_map = true;
-                            }
-                        }else{
-                            Toast.makeText(thisContextActivity, "No Internet Connection!", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
+                if (!started_map) {
+                    changeFragment(new Gym() ,new String[]{"gps:on"});
+                    started_map = true;
+                }
             }else{
-                Toast.makeText(thisContextActivity, "Hello2", Toast.LENGTH_SHORT).show();
-                ShowGpsDialog();
+                if (!started_map) {
+                    changeFragment(new Gym() ,new String[]{"gps:off"});
+                    started_map = true;
+                }
+                tos.error(MainActivity.this , R.string.no_enable_gps);
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_GOOGLE_MAP_FINE_LOCATION){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                InitGoogleApiClient();
+                tos.success(MainActivity.this , R.string.network_ok);
+            }else{
+                tos.error(MainActivity.this , R.string.no_access);
+                tos.warning(MainActivity.this , R.string.make_access);
+            }
+        }
+
     }
 }

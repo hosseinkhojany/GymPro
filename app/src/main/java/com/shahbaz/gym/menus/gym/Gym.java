@@ -4,57 +4,26 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.maps.model.Marker;
 import com.shahbaz.gym.MainActivity;
 import com.shahbaz.gym.R;
+import com.shahbaz.gym.appUtils.Data.MemoryCache;
+import com.shahbaz.gym.appUtils.Data.StoreValue;
 import com.shahbaz.gym.appUtils.InternetOKey;
-import com.shahbaz.gym.appUtils.l;
 import com.special.ResideMenu.ResideMenu;
 
 public class Gym extends Fragment implements OnMapReadyCallback {
@@ -71,13 +40,20 @@ public class Gym extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private GoogleApiClient googleApiClient;
 
+    private GPSTracker tracker;
+    private boolean gps_enable;
+    private boolean first_moved = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_gym, container, false);
         thisActivityContext = getActivity();
+        tracker = new GPSTracker(getActivity());
 
+        Bundle bundle = getArguments();
+        if (bundle.getString("gps").equals("on")){gps_enable = true;}else{gps_enable=false;}
 
         mapView = (MapView) parentView.findViewById(R.id.map_gym);
         mapView.onCreate(savedInstanceState);
@@ -96,24 +72,26 @@ public class Gym extends Fragment implements OnMapReadyCallback {
                 == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(thisActivityContext, Manifest.permission.ACCESS_COARSE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
-
-
             map = googleMap;
             map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             map.setMyLocationEnabled(true);
 
+            initFirstCamera();
 
 
 
-            //add a test markers
-            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
-                public void onMapClick(LatLng latLng) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Lat:"+latLng.latitude+"\n"+"Lng:"+latLng.longitude +"\n"+ map.getCameraPosition().zoom);
-                    builder.show();
+                public boolean onMarkerClick(Marker marker) {
+
+
+
+
+
+                    return true;
                 }
             });
+
 
         } else {
             ActivityCompat.requestPermissions((Activity) thisActivityContext,
@@ -121,8 +99,36 @@ public class Gym extends Fragment implements OnMapReadyCallback {
                     REQUEST_GOOGLE_MAP_FINE_LOCATION);
         }
 
-}
+    }
 
+
+    public void initFirstCamera(){
+        if (gps_enable && !first_moved) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(tracker.getLatitude()
+                            , tracker.longitude), 15f));
+                    first_moved = true;
+                }
+            }, 1000);
+
+        } else {
+            //load last stored location
+
+
+            String location = StoreValue.getVal(getActivity() , StoreValue.User.last_user_location , "");
+            double lat = Double.parseDouble(location.split(":")[0]);
+            double lng = Double.parseDouble(location.split(":")[1]);
+            LatLng latLng = new LatLng(lat , lng);
+            float zoom = Float.parseFloat(location.split(":")[2]);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
+
+            first_moved = true;
+
+        }
+    }
 
     @Override
     public void onResume() {
@@ -140,6 +146,10 @@ public class Gym extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        StoreValue.editVal(getActivity() , StoreValue.User.last_user_location ,
+                map.getCameraPosition().target.latitude+":"
+                        +map.getCameraPosition().target.longitude+":"
+                        +map.getCameraPosition().zoom);
         mapView.onDestroy();
     }
 
@@ -148,9 +158,6 @@ public class Gym extends Fragment implements OnMapReadyCallback {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
-
-
 
 
     private void setUpViews() {

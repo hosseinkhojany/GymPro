@@ -20,9 +20,7 @@ public class InternetOKey  {
 
     private boolean quite;
 
-    public InternetOKey() {
-
-    }
+    public InternetOKey() {}
 
     private void initHandler() {
         quite = false;
