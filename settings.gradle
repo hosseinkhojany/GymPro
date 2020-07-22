@@ -1,3 +1,4 @@
+include ':KenBurnView'
 include ':CsnackBar'
 include ':ResideMenu'
 include ':MatchView'

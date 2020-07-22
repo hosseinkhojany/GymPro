@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/CsnackBar" />
+            <option value="$PROJECT_DIR$/KenBurnView" />
             <option value="$PROJECT_DIR$/MatchView" />
             <option value="$PROJECT_DIR$/ResideMenu" />
             <option value="$PROJECT_DIR$/app" />

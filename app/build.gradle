@@ -40,6 +40,7 @@ dependencies {
     implementation project(':MatchView')
     implementation project(':ResideMenu')
     implementation project(':CsnackBar')
+    implementation project(':KenBurnView')
 
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 //    implementation 'com.google.firebase:firebase-analytics:17.4.4'
